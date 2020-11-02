@@ -60,10 +60,11 @@ module.exports = function (context, request) {
     var boundary = multipart.getBoundary(request.headers['content-type']);
     // parse the body
     var parts = multipart.Parse(bodyBuffer, boundary);
-    var file = parts[0].data;
+    // var file = parts[0].data;
 
+    let bufferOriginal = Buffer.from(JSON.parse(parts[0].data).data);
     // fs.writeFileSync('D:/local/Temp/settings.json', JSON.stringify(parts[0].data))
 
-    context.res = { body : { name : parts[0].filename, type: parts[0].type, data: parts[0].data.data}}; 
+    context.res = { body : { name : parts[0].filename, type: parts[0].type, data: bufferOriginal.toString('utf8')}}; 
     context.done();  
 };
