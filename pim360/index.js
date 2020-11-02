@@ -1,11 +1,14 @@
-var express = require("express");
-var app = express();
-
-app.get("/url", (req, res, next) => {
-    res.json(["Tony", "Lisa", "Michael", "Ginger", "Food"]);
+const createHandler = require("azure-function-express").createHandler;
+const express = require("express");
+ 
+// Create express app as usual
+const app = express();
+app.get("/api/:foo/:bar", (req, res) => {
+  res.json({
+    foo  : req.params.foo,
+    bar  : req.params.bar
+  });
 });
-
-
-app.listen(80, () => {
-    console.log("Server running on port 3000");
-});
+ 
+// Binds the express app to an Azure Function handler
+module.exports = createHandler(app);
