@@ -64,6 +64,6 @@ module.exports = function (context, request) {
 
     // fs.writeFileSync('D:/local/Temp/settings.json', JSON.stringify(parts[0].data))
 
-    context.res = { body : { name : parts[0].filename, type: parts[0].type, data: JSON.stringify(parts[0].data)}}; 
+    context.res = { body : { name : parts[0].filename, type: parts[0].type, data: JSON.stringify(parts[0])}}; 
     context.done();  
 };
