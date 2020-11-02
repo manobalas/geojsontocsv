@@ -14,8 +14,9 @@ module.exports = function (context, request) {
 
     let json = JSON.stringify(parts[0].data);
     let bufferOriginal = Buffer.from(JSON.parse(json).data);
+    let finalJSONData = bufferOriginal.toString('utf8');
     // fs.writeFileSync('D:/local/Temp/settings.json', JSON.stringify(parts[0].data))
 
-    context.res = { body : { name : parts[0].filename, type: parts[0].type, data: bufferOriginal.toString('utf8')}}; 
+    context.res = { body : { name : parts[0].filename, type: parts[0].type, data: JSON.parse(finalJSONData)}}; 
     context.done();  
 };
