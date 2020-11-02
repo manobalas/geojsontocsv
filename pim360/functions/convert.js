@@ -5,19 +5,12 @@ const convert = function (request) {
     try {
         return new Promise((resolve, reject) => {
             try {
-                // encode body to base64 string
                 var bodyBuffer = Buffer.from(request.body);
-                // get boundary for multipart data e.g. ------WebKitFormBoundaryDtbT5UpPj83kllfw
                 var boundary = multipart.getBoundary(request.headers['content-type']);
-                // parse the body
                 var parts = multipart.Parse(bodyBuffer, boundary);
-                // var file = parts[0].data;
-
                 let json = JSON.stringify(parts[0].data);
                 let bufferOriginal = Buffer.from(JSON.parse(json).data);
                 let finalJSONData = JSON.parse(bufferOriginal.toString());
-                // fs.writeFileSync('D:/local/Temp/settings.json', JSON.stringify(parts[0].data))
-
                 let arrObj = [];
                 finalJSONData.features.map((i) => {
                     arrObj.push({
@@ -41,7 +34,6 @@ const convert = function (request) {
     } catch (error) {
         resolve({ "msg": error })
     }
-
 }
 
 exports.do = convert;
