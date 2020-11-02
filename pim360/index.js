@@ -1,12 +1,14 @@
-const createHandler = require('azure-function-express').createHandler;
-const app = require('express')();
-
-app.get("/home", (req, res) => {
-    res.json({ "name": "name", "dob": "ddmmyyyy" });
+const createHandler = require("azure-function-express").createHandler;
+const express = require("express");
+ 
+// Create express app as usual
+const app = express();
+app.get("/api/:foo/:bar", (req, res) => {
+  res.json({
+    foo  : req.params.foo,
+    bar  : req.params.bar
+  });
 });
-
-app.get("/work", (req, res) => {
-    res.json({ "name": req.query.name, "dob": "ddmmyyyy" });
-});
-
+ 
+// Binds the express app to an Azure Function handler
 module.exports = createHandler(app);

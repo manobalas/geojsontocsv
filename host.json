@@ -1,5 +1,19 @@
 {
   "version": "2.0",
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "route": "{*segments}"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ],
   "logging": {
     "applicationInsights": {
       "samplingSettings": {
@@ -11,5 +25,5 @@
   "extensionBundle": {
     "id": "Microsoft.Azure.Functions.ExtensionBundle",
     "version": "[1.*, 2.0.0)"
-  }
+  }  
 }
