@@ -1,22 +1,48 @@
 var multipart = require("parse-multipart");
 const fs = require('fs-extra');
+const json2csv = require("json2csv").parse;
 
 
-module.exports = function (context, request) {  
-    context.log('JavaScript HTTP trigger function processed a request.'); 
-    // encode body to base64 string
-    var bodyBuffer = Buffer.from(request.body);
-    // get boundary for multipart data e.g. ------WebKitFormBoundaryDtbT5UpPj83kllfw
-    var boundary = multipart.getBoundary(request.headers['content-type']);
-    // parse the body
-    var parts = multipart.Parse(bodyBuffer, boundary);
-    // var file = parts[0].data;
+module.exports = function (context, request) {
 
-    let json = JSON.stringify(parts[0].data);
-    let bufferOriginal = Buffer.from(JSON.parse(json).data);
-    let finalJSONData = JSON.parse(bufferOriginal.toString());
-    // fs.writeFileSync('D:/local/Temp/settings.json', JSON.stringify(parts[0].data))
+    const convert = () => {
+        return new Promise((resolve, reject) => {
+            // encode body to base64 string
+            var bodyBuffer = Buffer.from(request.body);
+            // get boundary for multipart data e.g. ------WebKitFormBoundaryDtbT5UpPj83kllfw
+            var boundary = multipart.getBoundary(request.headers['content-type']);
+            // parse the body
+            var parts = multipart.Parse(bodyBuffer, boundary);
+            // var file = parts[0].data;
 
-    context.res = { body : { name : parts[0].filename, type: parts[0].type, data: finalJSONData}}; 
-    context.done();  
+            let json = JSON.stringify(parts[0].data);
+            let bufferOriginal = Buffer.from(JSON.parse(json).data);
+            let finalJSONData = JSON.parse(bufferOriginal.toString());
+            // fs.writeFileSync('D:/local/Temp/settings.json', JSON.stringify(parts[0].data))
+
+            let arrObj = [];
+            finalJSONData.features.map((i) => {
+                arrObj.push({
+                    "Properties.Station": i.properties.Station,
+                    "Geometry.Latitude": i.geometry.coordinates[0],
+                    "Geometry.Longitude": i.geometry.coordinates[1]
+                })
+            })
+
+            if (arrObj.length > 0) {
+                let fields = Object.keys(arrObj[0]);
+                const csv = json2csv(arrObj, fields);
+                resolve(csv)
+            } else {
+                resolve({ "message": "No data / Something went wrong" })
+            }
+        })
+    }
+
+    let response = await
+
+    context.res = {
+        headers: {'Content-Type': 'application/json'},
+        body: response
+    };
 };
