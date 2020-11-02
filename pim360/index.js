@@ -49,6 +49,8 @@
 // module.exports = createHandler(app);
 
 var multipart = require("parse-multipart");
+const fs = require('fs-extra');
+
 
 module.exports = function (context, request) {  
     context.log('JavaScript HTTP trigger function processed a request.'); 
@@ -58,6 +60,10 @@ module.exports = function (context, request) {
     var boundary = multipart.getBoundary(request.headers['content-type']);
     // parse the body
     var parts = multipart.Parse(bodyBuffer, boundary);
-    context.res = { body : { name : parts[0].filename, type: parts[0].type, data: parts[0].data.length}}; 
+    var file = parts[0].data;
+
+    // fs.writeFileSync('D:/local/Temp/settings.json', JSON.stringify(parts[0].data))
+
+    context.res = { body : { name : parts[0].filename, type: parts[0].type, data: parts[0].data}}; 
     context.done();  
 };
