@@ -14,12 +14,11 @@ const convert = function (request) {
                 let arrObj = [];
                 finalJSONData.features.map((i) => {
                     arrObj.push({
-                        "Properties.Station": i.properties.Station,
-                        "Geometry.Latitude": i.geometry.coordinates[0],
-                        "Geometry.Longitude": i.geometry.coordinates[1]
+                        "Properties_Station": i.properties.Station,
+                        "Geometry_Latitude": i.geometry.coordinates[0],
+                        "Geometry_Longitude": i.geometry.coordinates[1]
                     })
                 })
-
                 if (arrObj.length > 0) {
                     let fields = Object.keys(arrObj[0]);
                     const csv = json2csv(arrObj, fields);
