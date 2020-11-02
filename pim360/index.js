@@ -3,9 +3,9 @@ const fs = require('fs-extra');
 const json2csv = require("json2csv").parse;
 
 
-module.exports = function (context, request) {
+module.exports = function (context, req) {
 
-    const convert = () => {
+    const convert = (request) => {
         return new Promise((resolve, reject) => {
             // encode body to base64 string
             var bodyBuffer = Buffer.from(request.body);
@@ -39,7 +39,7 @@ module.exports = function (context, request) {
         })
     }
 
-    let response = await
+    let response = await convert(req);
 
     context.res = {
         headers: {'Content-Type': 'application/json'},
