@@ -1,5 +1,5 @@
 var multipart = require("parse-multipart");
-const json2csv = require("json2csv").parse;
+const fs = require('fs-extra');
 
 const convert = function (request) {
     try {
@@ -20,9 +20,11 @@ const convert = function (request) {
                     })
                 })
                 if (arrObj.length > 0) {
-                    let fields = Object.keys(arrObj[0]);
-                    const csv = json2csv(arrObj, fields);
-                    resolve(csv)
+                    // let fields = Object.keys(arrObj[0]);
+                    // const csv = json2csv(arrObj, fields);
+                    let fileName = new Date().getTime();
+                    fs.writeFileSync(`D:/local/Temp/${fileName}.json`, arrObj)
+                    resolve({"filename": fileName})
                 } else {
                     resolve({ "message": "No data / Something went wrong" })
                 }

@@ -1,12 +1,30 @@
 const convertfun = require('./functions/convert');
+const download = require('./functions/download');
 
 module.exports = async function (context, req) {
-    let response = await convertfun.do(req)
+    let response = {};
+    const function_name = (req.query.function_name || "geojsontocsv");
+    const file_name = (req.query.file_name || "");
+    switch (function_name) {
+        case "geojsontocsv":
+            response = await convertfun.do(req)
+            break;
+        case "download":
+            response = await download.do(req, file_name)
+            break;
+
+        default:
+            break;
+    }
+    let csvHeader = {
+        'Content-Type': 'text/csv',
+        "Content-Disposition": `attachment; filename=${"geojsontocsv-" + new Date().getTime() + ".csv"}`
+    }
+    let jsonHeader = {
+        'Content-Type': 'application/json',
+    }
     context.res = {
-        headers: {
-            'Content-Type': 'text/csv',
-            "Content-Disposition": `attachment; filename=${"geojsontocsv-" + new Date().getTime() + ".csv"}`
-        },
+        headers: function_name == "geojsontocsv" ? jsonHeader : csvHeader,
         body: response
     };
 };
