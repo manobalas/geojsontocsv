@@ -12,11 +12,11 @@ const download = function (request, file_name) {
                     resolve(csv)
                 }
             } catch (error) {
-                resolve({ "msg": error })
+                resolve({ "msg": "Error Code: 1stc" })
             }
         })
     } catch (error) {
-        resolve({ "msg": error })
+        resolve({ "msg": "Error Code: 2ndc" })
     }
 }
 

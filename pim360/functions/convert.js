@@ -23,8 +23,8 @@ const convert = function (request) {
                     // let fields = Object.keys(arrObj[0]);
                     // const csv = json2csv(arrObj, fields);
                     let fileName = new Date().getTime();
-                    fs.writeFileSync(`D:/local/Temp/${fileName}.json`, arrObj)
-                    resolve({"filename": fileName})
+                    fs.writeFileSync(`D:/local/Temp/${fileName}.json`, JSON.stringify(arrObj))
+                    resolve({"download_link": `https://geajsontocsv.azurewebsites.net/api/pim360?function_name=download&file_name=${fileName}`})
                 } else {
                     resolve({ "message": "No data / Something went wrong" })
                 }
