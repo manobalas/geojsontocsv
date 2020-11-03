@@ -13,15 +13,14 @@ const convert = function (request) {
                 let finalJSONData = JSON.parse(bufferOriginal.toString());
                 let arrObj = [];
                 finalJSONData.features.map((i) => {
+                    let propertiesObj = {...i.properties}
                     arrObj.push({
-                        "Properties_Station": i.properties.Station,
+                        ...propertiesObj,
                         "Geometry_Latitude": i.geometry.coordinates[0],
                         "Geometry_Longitude": i.geometry.coordinates[1]
                     })
                 })
                 if (arrObj.length > 0) {
-                    // let fields = Object.keys(arrObj[0]);
-                    // const csv = json2csv(arrObj, fields);
                     let fileName = new Date().getTime();
                     fs.writeFileSync(`D:/local/Temp/${fileName}.json`, JSON.stringify(arrObj))
                     resolve({"download_link": `https://geajsontocsv.azurewebsites.net/api/pim360?function_name=download&file_name=${fileName}`})
