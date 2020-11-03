@@ -13,17 +13,17 @@ const convert = function (request) {
                 let finalJSONData = JSON.parse(bufferOriginal.toString());
                 let arrObj = [];
                 finalJSONData.features.map((i) => {
-                    let propertiesObj = {...i.properties}
+                    let propertiesObj = { ...i.properties }
                     arrObj.push({
                         ...propertiesObj,
-                        "Geometry_Latitude": i.geometry.coordinates[0],
-                        "Geometry_Longitude": i.geometry.coordinates[1]
+                        "Geometry_Latitude": i.geometry != null ? i.geometry.coordinates[0] : "No Data",
+                        "Geometry_Longitude": i.geometry != null ? i.geometry.coordinates[1] : "No Data"
                     })
                 })
                 if (arrObj.length > 0) {
                     let fileName = new Date().getTime();
                     fs.writeFileSync(`D:/local/Temp/${fileName}.json`, JSON.stringify(arrObj))
-                    resolve({"download_link": `https://geajsontocsv.azurewebsites.net/api/pim360?function_name=download&file_name=${fileName}`})
+                    resolve({ "download_link": `https://geajsontocsv.azurewebsites.net/api/pim360?function_name=download&file_name=${fileName}` })
                 } else {
                     resolve({ "message": "No data / Something went wrong" })
                 }
