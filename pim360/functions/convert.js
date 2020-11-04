@@ -15,8 +15,18 @@ const convert = function (request) {
                 let arrObj = [];
                 finalJSONData.features.map((i) => {
                     let propertiesObj = { ...i.properties }
+                    let newKey = []
+                    Object.keys(propertiesObj).map(
+                        (i) => newKey.push(`Properties_${i}`)
+                    )
+                    let newObj = {};
+                    Object.keys(propertiesObj).map(
+                        (i, index) => {
+                            newObj[newKey[index]] = propertiesObj[i]
+                        }
+                    )
                     arrObj.push({
-                        ...propertiesObj,
+                        ...newObj,
                         "Geometry_Latitude": i.geometry != null ? i.geometry.coordinates[0] : "No Data",
                         "Geometry_Longitude": i.geometry != null ? i.geometry.coordinates[1] : "No Data"
                     })
