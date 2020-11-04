@@ -27,8 +27,8 @@ const convert = function (request) {
                     )
                     arrObj.push({
                         ...newObj,
-                        "Geometry_Latitude": i.geometry != null ? i.geometry.coordinates[0] : "No Data",
-                        "Geometry_Longitude": i.geometry != null ? i.geometry.coordinates[1] : "No Data"
+                        "Geometry.Latitude": i.geometry != null ? i.geometry.coordinates[0] : "No Data",
+                        "Geometry.Longitude": i.geometry != null ? i.geometry.coordinates[1] : "No Data"
                     })
                 })
                 if (arrObj.length > 0) {
