@@ -8,7 +8,7 @@ const convert = function (request) {
                 var bodyBuffer = Buffer.from(request.body);
                 var boundary = multipart.getBoundary(request.headers['content-type']);
                 var parts = multipart.Parse(bodyBuffer, boundary);
-                let orgFileName = parts[0].filename;
+                let orgFileName = parts[0].Filename;
                 let json = JSON.stringify(parts[0].data);
                 let bufferOriginal = Buffer.from(JSON.parse(json).data);
                 let finalJSONData = JSON.parse(bufferOriginal.toString());
@@ -24,7 +24,7 @@ const convert = function (request) {
                 if (arrObj.length > 0) {
                     let fileName = new Date().getTime();
                     fs.writeFileSync(`D:/local/Temp/${orgFileName}.json`, JSON.stringify(arrObj))
-                    resolve({ "download_link": `https://geajsontocsv.azurewebsites.net/api/pim360?function_name=download&file_name=${fileName}` })
+                    resolve({ "download_link": `https://geajsontocsv.azurewebsites.net/api/pim360?function_name=download&file_name=${orgFileName}` })
                 } else {
                     resolve({ "message": "No data / Something went wrong" })
                 }

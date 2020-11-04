@@ -18,7 +18,7 @@ module.exports = async function (context, req) {
     }
     let csvHeader = {
         'Content-Type': 'text/csv',
-        "Content-Disposition": `attachment; filename=${"geojsontocsv-" + new Date().getTime() + ".csv"}`
+        "Content-Disposition": `attachment; filename=${file_name+".csv"}`
     }
     let jsonHeader = {
         'Content-Type': 'application/json',
