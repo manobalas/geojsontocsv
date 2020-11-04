@@ -17,7 +17,7 @@ const convert = function (request) {
                     let propertiesObj = { ...i.properties }
                     let newKey = []
                     Object.keys(propertiesObj).map(
-                        (i) => newKey.push(`Properties_${i}`)
+                        (i) => newKey.push(`Properties.${i}`)
                     )
                     let newObj = {};
                     Object.keys(propertiesObj).map(
