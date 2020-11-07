@@ -51,8 +51,8 @@ const convertjson = function (request) {
     try {
         return new Promise((resolve, reject) => {
             try {
-                let orgFileName = req.body.filename;
-                let finalJSONData = JSON.parse(req.body.content);
+                let orgFileName = request.body.filename;
+                let finalJSONData = JSON.parse(request.body.content);
                 let arrObj = [];
                 finalJSONData.features.map((i) => {
                     let propertiesObj = { ...i.properties }
