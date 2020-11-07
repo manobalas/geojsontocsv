@@ -9,6 +9,9 @@ module.exports = async function (context, req) {
         case "geojsontocsv":
             response = await convertfun.do(req)
             break;
+        case "geojsontocsvflowversion":
+            response = await convertfun.dojson(req)
+            break;
         case "download":
             response = await download.do(req, file_name)
             break;
@@ -18,7 +21,7 @@ module.exports = async function (context, req) {
     }
     let csvHeader = {
         'Content-Type': 'text/csv',
-        "Content-Disposition": `attachment; filename=${file_name+".csv"}`
+        "Content-Disposition": `attachment; filename=${file_name + ".csv"}`
     }
     let jsonHeader = {
         'Content-Type': 'application/json',
