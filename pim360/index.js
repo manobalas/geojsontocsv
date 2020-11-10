@@ -1,5 +1,6 @@
 const convertfun = require('./functions/convert');
 const download = require('./functions/download');
+var multipart = require("parse-multipart");
 
 module.exports = async function (context, req) {
     let response = {};
@@ -10,8 +11,12 @@ module.exports = async function (context, req) {
         case "geojsontocsv":
             response = await convertfun.do(req)
             break;
-        case "geojsontocsvflowversion":
-            file_name = (req.body.body.filename || "");
+        case "geojsontocsvflowversion":            
+            var bodyBuffer = Buffer.from(request.body);
+            var boundary = multipart.getBoundary(request.headers['content-type']);
+            var parts = multipart.Parse(bodyBuffer, boundary);
+            let orgFileName = parts[0].filename;
+            file_name = (orgFileName || "");
             response = await convertfun.dojson(req)            
             break;
         case "geojsontocsvflowversionextendeddownload":
