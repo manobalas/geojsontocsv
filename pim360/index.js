@@ -12,6 +12,9 @@ module.exports = async function (context, req) {
         case "geojsontocsvflowversion":
             response = await convertfun.dojson(req)
             break;
+        case "geojsontocsvflowversionextendeddownload":
+            response = await convertfun.dojsonanddownload(req)
+            break;
         case "download":
             response = await download.do(req, file_name)
             break;
