@@ -4,7 +4,7 @@ const download = require('./functions/download');
 module.exports = async function (context, req) {
     let response = {};
     const function_name = (req.query.function_name || "geojsontocsv");
-    const file_name = (req.query.file_name || "");
+    let file_name = (req.query.file_name || "");
 
     switch (function_name) {
         case "geojsontocsv":
