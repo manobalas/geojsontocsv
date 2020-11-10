@@ -5,12 +5,14 @@ module.exports = async function (context, req) {
     let response = {};
     const function_name = (req.query.function_name || "geojsontocsv");
     const file_name = (req.query.file_name || "");
+
     switch (function_name) {
         case "geojsontocsv":
             response = await convertfun.do(req)
             break;
         case "geojsontocsvflowversion":
-            response = await convertfun.dojson(req)
+            file_name = (req.body.body.filename || "");
+            response = await convertfun.dojson(req)            
             break;
         case "geojsontocsvflowversionextendeddownload":
             response = await convertfun.dojsonanddownload(req)
