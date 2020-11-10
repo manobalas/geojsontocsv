@@ -115,8 +115,8 @@ const convertjsonanddownload = function (request) {
                     })
                 })
                 if (arrObj.length > 0) {
-                    let fields = Object.keys(fileData[0]);
-                    const csv = json2csv(fileData, fields);
+                    let fields = Object.keys(arrObj[0]);
+                    const csv = json2csv(arrObj, fields);
                     resolve(csv)
                     // let fileName = new Date().getTime();
                     // fs.writeFileSync(`D:/local/Temp/${orgFileName}.json`, JSON.stringify(arrObj))
@@ -125,11 +125,11 @@ const convertjsonanddownload = function (request) {
                     resolve({ "message": "No data / Something went wrong" })
                 }
             } catch (error) {
-                resolve({ "msg": error })
+                resolve({ "msg": JSON.stringify(error) })
             }
         })
     } catch (error) {
-        resolve({ "msg": error })
+        resolve({ "msg": JSON.stringify(error) })
     }
 }
 
