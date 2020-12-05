@@ -16,7 +16,7 @@ function haversine(lat1, lon1, lat2, lon2) {
 
     const d = R * c; // in metres
     // return Math.round(d / 1000);
-    return d/1000;
+    return d / 1000;
 }
 
 const convert = function (request) {
@@ -48,17 +48,17 @@ const convert = function (request) {
                     )
                     let coordinatesLength = i.geometry.coordinates.length;
                     let totalKM = 0;
-                    if (coordinatesLength > 0) {                        
+                    if (coordinatesLength > 0) {
                         i.geometry.coordinates.map((coordinate, index) => {
                             if (coordinatesLength === index + 1) {
                                 // last one // ignore
                             } else {
                                 // not last one
-                                totalKM + haversine(
+                                totalKM = totalKM + haversine(
                                     parseFloat(i.geometry.coordinates[index][1]),
                                     parseFloat(i.geometry.coordinates[index][0]),
-                                    parseFloat(i.geometry.coordinates[index+1][1]),
-                                    parseFloat(i.geometry.coordinates[index+1][0])
+                                    parseFloat(i.geometry.coordinates[index + 1][1]),
+                                    parseFloat(i.geometry.coordinates[index + 1][0])
                                 );
                                 // if (index == 0) {
                                 //     // first one
