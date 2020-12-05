@@ -47,8 +47,8 @@ const convert = function (request) {
                         }
                     )
                     let coordinatesLength = i.geometry.coordinates.length;
-                    if (coordinatesLength > 0) {
-                        let totalKM = 0;
+                    let totalKM = 0;
+                    if (coordinatesLength > 0) {                        
                         i.geometry.coordinates.map((coordinate, index) => {
                             if (coordinatesLength === index + 1) {
                                 // last one // ignore
