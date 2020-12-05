@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const json2csv = require("json2csv").parse;
 
 function getMiles(i) {
-    return i*0.000621371192;
+    return i * 0.000621371192;
 }
 
 function distanceCalc(lat1, lon1, lat2, lon2) {
