@@ -62,7 +62,7 @@ const convert = function (request) {
                             if (coordinatesLength === index + 1) {
                                 // last one // ignore
                             } else {
-                                // not last one
+                                // others
                                 let dist = distanceCalc(
                                     parseFloat(i.geometry.coordinates[index][1]),
                                     parseFloat(i.geometry.coordinates[index][0]),
