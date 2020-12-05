@@ -46,7 +46,7 @@ const convert = function (request) {
                             newObj[newKey[index]] = propertiesObj[i]
                         }
                     )
-                    let coordinatesLength = i.geometry.coordinates.length;
+                    let coordinatesLength = i.geometry.coordinates.length;                    
                     if (coordinatesLength > 0) {
                         let totalKM = 0;
                         i.geometry.coordinates.map((coordinate, index) => {
@@ -60,15 +60,15 @@ const convert = function (request) {
                                     parseFloat(i.geometry.coordinates[index + 1][1]),
                                     parseFloat(i.geometry.coordinates[index + 1][0])
                                 );
-                                arrObj.push({
-                                    ...newObj,
-                                    "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index][1] : "No Data",
-                                    "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index][0] : "No Data",
-                                    "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index + 1][1] : "No Data",
-                                    "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index + 1][0] : "No Data",
-                                    "sample": totalKM / 1000
-                                })
                             }
+                        })
+                        arrObj.push({
+                            ...newObj,
+                            "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[0][0] : "No Data",
+                            "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[0][1] : "No Data",
+                            "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength - 1][0] : "No Data",
+                            "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength - 1][1] : "No Data",
+                            "sample": totalKM/1000
                         })
                     } else {
                         arrObj.push({
