@@ -15,8 +15,8 @@ function haversine(lat1, lon1, lat2, lon2) {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     const d = R * c; // in metres
-    return Math.round(d / 1000);
-    // return d / 1000;
+    // return Math.round(d / 1000);
+    return d;
 }
 
 const convert = function (request) {
@@ -85,7 +85,7 @@ const convert = function (request) {
                             "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[0][1] : "No Data",
                             "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength - 1][0] : "No Data",
                             "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength - 1][1] : "No Data",
-                            "sample": totalKM
+                            "sample": totalKM/1000
                         })
                     } else {
                         arrObj.push({
