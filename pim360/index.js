@@ -1,5 +1,6 @@
 const convertfun = require('./functions/convert');
 const download = require('./functions/download');
+const convertLineStringToCSV = require('./functions/convertLineStringToCSV');
 
 module.exports = async function (context, req) {
     let response = {};
@@ -12,10 +13,13 @@ module.exports = async function (context, req) {
             response = await convertfun.do(req)
             break;
         case "geojsontocsvflowversion":
-            response = await convertfun.dojson(req)            
+            response = await convertfun.dojson(req)
             break;
         case "geojsontocsvflowversionextendeddownload":
             response = await convertfun.dojsonanddownload(req)
+            break;
+        case "linestringgeojsontocsvflowversion":
+            response = await convertLineStringToCSV.do(req)
             break;
         case "download":
             response = await download.do(req, file_name)
@@ -27,7 +31,7 @@ module.exports = async function (context, req) {
     let csvHeader = {
         'Content-Type': 'text/csv',
         "Content-Disposition": `attachment; filename=${file_name + ".csv"}`,
-        "cs-header-file-name": file_name+'.csv'
+        "cs-header-file-name": file_name + '.csv'
     }
     let jsonHeader = {
         'Content-Type': 'application/json',
