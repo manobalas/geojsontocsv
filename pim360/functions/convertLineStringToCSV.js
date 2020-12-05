@@ -1,7 +1,22 @@
 var multipart = require("parse-multipart");
 const fs = require('fs-extra');
 const json2csv = require("json2csv").parse;
-import LatLon from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-spherical.min.js';
+
+function haversine(lat1, lon1, lat2, lon2) {
+    const R = 6371e3; // metres
+    const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const d = R * c; // in metres
+    return Math.round(d / 1000);
+}
 
 const convert = function (request) {
     try {
@@ -32,15 +47,44 @@ const convert = function (request) {
                     )
                     let coordinatesLength = i.geometry.coordinates.length;
                     if (coordinatesLength > 0) {
-                        const p1 = LatLon.parse('11.0168, 76.9558');
-                        const p2 = LatLon.parse('11.3410, 77.7172');
+                        let totalKM = 0;
+                        i.geometry.coordinates.map((coordinate, index) => {
+                            if (coordinatesLength === index + 1) {
+                                // last one // ignore
+                            } else {
+                                // not last one
+                                totalKM + haversine(
+                                    i.geometry.coordinates[index][1],
+                                    i.geometry.coordinates[index][0],
+                                    i.geometry.coordinates[index+1][1],
+                                    i.geometry.coordinates[index+1][0]
+                                );
+                                // if (index == 0) {
+                                //     // first one
+                                //     totalKM + haversine(
+                                //         i.geometry.coordinates[index][1],
+                                //         i.geometry.coordinates[index][0],
+                                //         i.geometry.coordinates[index+1][1],
+                                //         i.geometry.coordinates[index+1][0]
+                                //     );
+                                // } else {
+                                //     // others
+                                //     totalKM + haversine(
+                                //         i.geometry.coordinates[index][1],
+                                //         i.geometry.coordinates[index][0],
+                                //         i.geometry.coordinates[index+1][1],
+                                //         i.geometry.coordinates[index+1][0]
+                                //     );
+                                // }
+                            }
+                        })
                         arrObj.push({
                             ...newObj,
                             "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[0][0] : "No Data",
-                            "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[0][1] : "No Data",             
-                            "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength-1][0] : "No Data",               
-                            "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength-1][1] : "No Data",
-                            "sample": parseFloat(p1.distanceTo(p2).toPrecision(4))
+                            "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[0][1] : "No Data",
+                            "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength - 1][0] : "No Data",
+                            "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength - 1][1] : "No Data",
+                            "sample": totalKM
                         })
                     } else {
                         arrObj.push({
