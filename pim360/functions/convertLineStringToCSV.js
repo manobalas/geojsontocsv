@@ -55,6 +55,7 @@ const convert = function (request) {
                         }
                     )
                     let coordinatesLength = i.geometry.coordinates.length;
+                    let cumulative_totalM = 0;
                     if (coordinatesLength > 0) {
                         i.geometry.coordinates.map((coordinate, index) => {
                             let totalM = 0
@@ -62,12 +63,14 @@ const convert = function (request) {
                                 // last one // ignore
                             } else {
                                 // not last one
-                                totalM = totalM + distanceCalc(
+                                let dist = distanceCalc(
                                     parseFloat(i.geometry.coordinates[index][1]),
                                     parseFloat(i.geometry.coordinates[index][0]),
                                     parseFloat(i.geometry.coordinates[index + 1][1]),
                                     parseFloat(i.geometry.coordinates[index + 1][0])
                                 );
+                                totalM = totalM + dist;
+                                cumulative_totalM = cumulative_totalM + dist;
                                 arrObj.push({
                                     ...newObj,
                                     "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index][1] : "No Data",
@@ -75,7 +78,9 @@ const convert = function (request) {
                                     "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index + 1][1] : "No Data",
                                     "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index + 1][0] : "No Data",
                                     "Distance in Kilo Meters": totalM / 1000,
+                                    "Cumulative Distance in Kilo Meters": cumulative_totalM / 1000,
                                     "Distance in Miles": getMiles(totalM),
+                                    "Cumulative Distance in Miles": getMiles(cumulative_totalM),
                                 })
                             }
                         })
