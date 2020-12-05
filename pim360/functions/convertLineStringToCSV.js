@@ -1,6 +1,7 @@
 var multipart = require("parse-multipart");
 const fs = require('fs-extra');
 const json2csv = require("json2csv").parse;
+import LatLon from 'https://cdn.jsdelivr.net/npm/geodesy@2/latlon-spherical.min.js';
 
 const convert = function (request) {
     try {
@@ -31,12 +32,15 @@ const convert = function (request) {
                     )
                     let coordinatesLength = i.geometry.coordinates.length;
                     if (coordinatesLength > 0) {
+                        const p1 = LatLon.parse('11.0168, 76.9558');
+                        const p2 = LatLon.parse('11.3410, 77.7172');
                         arrObj.push({
                             ...newObj,
                             "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[0][0] : "No Data",
                             "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[0][1] : "No Data",             
                             "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength-1][0] : "No Data",               
-                            "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength-1][1] : "No Data",                            
+                            "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength-1][1] : "No Data",
+                            "sample": parseFloat(p1.distanceTo(p2).toPrecision(4))
                         })
                     } else {
                         arrObj.push({
