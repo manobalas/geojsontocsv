@@ -66,7 +66,7 @@ const convert = function (request) {
                                 // last one // ignore
                             } else {
                                 // not last one
-                                totalM = totalKM + distanceCalc(
+                                totalM = totalM + distanceCalc(
                                     parseFloat(i.geometry.coordinates[index][1]),
                                     parseFloat(i.geometry.coordinates[index][0]),
                                     parseFloat(i.geometry.coordinates[index + 1][1]),
