@@ -48,12 +48,13 @@ const convert = function (request) {
                     )
                     let coordinatesLength = i.geometry.coordinates.length;
                     if (coordinatesLength > 0) {
+                        let totalKM = 0;
                         i.geometry.coordinates.map((coordinate, index) => {
                             if (coordinatesLength === index + 1) {
                                 // last one // ignore
                             } else {
                                 // not last one
-                                let totalKM = totalKM + haversine(
+                                totalKM = totalKM + haversine(
                                     parseFloat(i.geometry.coordinates[index][1]),
                                     parseFloat(i.geometry.coordinates[index][0]),
                                     parseFloat(i.geometry.coordinates[index + 1][1]),
