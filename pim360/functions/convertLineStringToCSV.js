@@ -2,21 +2,33 @@ var multipart = require("parse-multipart");
 const fs = require('fs-extra');
 const json2csv = require("json2csv").parse;
 
-function haversine(lat1, lon1, lat2, lon2) {
-    const R = 6371e3; // metres
-    const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
-    const φ2 = lat2 * Math.PI / 180;
-    const Δφ = (lat2 - lat1) * Math.PI / 180;
-    const Δλ = (lon2 - lon1) * Math.PI / 180;
+function getMiles(i) {
+    return i*0.000621371192;
+}
 
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-        Math.cos(φ1) * Math.cos(φ2) *
-        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+function distanceCalc(lat1, lon1, lat2, lon2) {
+    // const R = 6371e3; // metres
+    // const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+    // const φ2 = lat2 * Math.PI / 180;
+    // const Δφ = (lat2 - lat1) * Math.PI / 180;
+    // const Δλ = (lon2 - lon1) * Math.PI / 180;
 
-    const d = R * c; // in metres
-    // return Math.round(d / 1000);
-    return d;
+    // const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    //     Math.cos(φ1) * Math.cos(φ2) *
+    //     Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    // const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    // const d = R * c; // in metres
+    // // return Math.round(d / 1000);
+    // return d;
+    function sqr(x) { return x * x; }
+    function cosDeg(x) { return Math.cos(x * Math.PI / 180.0); }
+
+    var earthCyclePerimeter = 40000000.0 * cosDeg((lat1 + lat2) / 2.0);
+    var dx = (lon1 - lon2) * earthCyclePerimeter / 360.0;
+    var dy = 37000000.0 * (lat1 - lat2) / 360.0;
+
+    return Math.sqrt(sqr(dx) + sqr(dy));
 }
 
 const convert = function (request) {
@@ -49,12 +61,12 @@ const convert = function (request) {
                     let coordinatesLength = i.geometry.coordinates.length;
                     if (coordinatesLength > 0) {
                         i.geometry.coordinates.map((coordinate, index) => {
-                            let totalKM = 0
+                            let totalM = 0
                             if (coordinatesLength === index + 1) {
                                 // last one // ignore
                             } else {
                                 // not last one
-                                totalKM = totalKM + haversine(
+                                totalM = totalKM + distanceCalc(
                                     parseFloat(i.geometry.coordinates[index][1]),
                                     parseFloat(i.geometry.coordinates[index][0]),
                                     parseFloat(i.geometry.coordinates[index + 1][1]),
@@ -66,7 +78,8 @@ const convert = function (request) {
                                     "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index][0] : "No Data",
                                     "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index + 1][1] : "No Data",
                                     "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index + 1][0] : "No Data",
-                                    "sample": totalKM / 1000
+                                    "Distance in Kilo Meters": totalM / 1000,
+                                    "Distance in Miles": getMiles(totalM),
                                 })
                             }
                         })
