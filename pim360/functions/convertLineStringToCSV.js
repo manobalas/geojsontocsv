@@ -55,10 +55,10 @@ const convert = function (request) {
                             } else {
                                 // not last one
                                 totalKM + haversine(
-                                    i.geometry.coordinates[index][1],
-                                    i.geometry.coordinates[index][0],
-                                    i.geometry.coordinates[index+1][1],
-                                    i.geometry.coordinates[index+1][0]
+                                    parseFloat(i.geometry.coordinates[index][1]),
+                                    parseFloat(i.geometry.coordinates[index][0]),
+                                    parseFloat(i.geometry.coordinates[index+1][1]),
+                                    parseFloat(i.geometry.coordinates[index+1][0])
                                 );
                                 // if (index == 0) {
                                 //     // first one
