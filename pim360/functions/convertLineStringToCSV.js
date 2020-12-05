@@ -33,10 +33,10 @@ const convert = function (request) {
                     if (coordinatesLength > 0) {
                         arrObj.push({
                             ...newObj,
-                            "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[0] : "No Data",
-                            "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[0] : "No Data",
-                            "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength-1] : "No Data",
-                            "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength-1] : "No Data",
+                            "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[0][0] : "No Data",
+                            "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[0][1] : "No Data",             
+                            "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength-1][0] : "No Data",               
+                            "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[coordinatesLength-1][1] : "No Data",                            
                         })
                     } else {
                         arrObj.push({
