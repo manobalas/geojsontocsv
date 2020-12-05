@@ -31,13 +31,14 @@ const convert = function (request) {
     try {
         return new Promise((resolve, reject) => {
             try {
-                var bodyBuffer = Buffer.from(request.body);
-                var boundary = multipart.getBoundary(request.headers['content-type']);
-                var parts = multipart.Parse(bodyBuffer, boundary);
-                let orgFileName = parts[0].filename;
-                let json = JSON.stringify(parts[0].data);
-                let bufferOriginal = Buffer.from(JSON.parse(json).data);
-                let finalJSONData = JSON.parse(bufferOriginal.toString());
+                // var bodyBuffer = Buffer.from(request.body);
+                // var boundary = multipart.getBoundary(request.headers['content-type']);
+                // var parts = multipart.Parse(bodyBuffer, boundary);
+                // let orgFileName = parts[0].filename;
+                // let json = JSON.stringify(parts[0].data);
+                // let bufferOriginal = Buffer.from(JSON.parse(json).data);
+                // let finalJSONData = JSON.parse(bufferOriginal.toString());
+                let finalJSONData = JSON.parse(request.body.body.content);                
 
                 // todo // add logic to reject if the type is not linestring
 
