@@ -7,24 +7,24 @@ function getMiles(i) {
 }
 
 function distanceCalc(lat1, lon1, lat2, lon2) {
-    // const R = 6371e3; // metres
-    // const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
-    // const φ2 = lat2 * Math.PI / 180;
-    // const Δφ = (lat2 - lat1) * Math.PI / 180;
-    // const Δλ = (lon2 - lon1) * Math.PI / 180;
-    // const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    //     Math.cos(φ1) * Math.cos(φ2) *
-    //     Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    // const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    // const d = R * c; // in metres
-    // // return Math.round(d / 1000);
-    // return d;
-    function sqr(x) { return x * x; }
-    function cosDeg(x) { return Math.cos(x * Math.PI / 180.0); }
-    var earthCyclePerimeter = 40000000.0 * cosDeg((lat1 + lat2) / 2.0);
-    var dx = (lon1 - lon2) * earthCyclePerimeter / 360.0;
-    var dy = 37000000.0 * (lat1 - lat2) / 360.0;
-    return Math.sqrt(sqr(dx) + sqr(dy));
+    const R = 6371e3; // metres
+    const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // in metres
+    // return Math.round(d / 1000);
+    return d;
+    // function sqr(x) { return x * x; }
+    // function cosDeg(x) { return Math.cos(x * Math.PI / 180.0); }
+    // var earthCyclePerimeter = 40000000.0 * cosDeg((lat1 + lat2) / 2.0);
+    // var dx = (lon1 - lon2) * earthCyclePerimeter / 360.0;
+    // var dy = 37000000.0 * (lat1 - lat2) / 360.0;
+    // return Math.sqrt(sqr(dx) + sqr(dy));
 }
 
 const convert = function (request) {
