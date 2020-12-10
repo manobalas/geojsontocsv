@@ -6,6 +6,7 @@ function getMiles(i) {
     return i * 0.000621371192;
 }
 
+// haversine
 function distanceCalc(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // metres
     const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
@@ -27,6 +28,41 @@ function distanceCalc(lat1, lon1, lat2, lon2) {
     // return Math.sqrt(sqr(dx) + sqr(dy));
 }
 
+const degreesToRadians = degrees => degrees * (Math.PI / 180)
+const radiansToDegrees = radians => radians * (180 / Math.PI)
+
+const earthRadius = 6371
+const greatCircleDistance = angle => 2 * Math.PI * earthRadius * (angle / 360)
+
+
+const centralSubtendedAngle = (locationX, locationY) => {
+    const locationXLatRadians = degreesToRadians(locationX.latitude)
+    const locationYLatRadians = degreesToRadians(locationY.latitude)
+    return radiansToDegrees(
+        Math.acos(
+            Math.sin(locationXLatRadians) * Math.sin(locationYLatRadians) +
+            Math.cos(locationXLatRadians) *
+            Math.cos(locationYLatRadians) *
+            Math.cos(
+                degreesToRadians(
+                    Math.abs(locationX.longitude - locationY.longitude)
+                )
+            )
+        )
+    )
+}
+
+const distanceBetweenLocations = (locationX, locationY) =>
+    greatCircleDistance(centralSubtendedAngle(locationX, locationY))
+
+function pytheoCalc(lat1, lon1, lat2, lon2) {
+    const pos1 = { latitude: lat1, longitude: lon1 }
+    const pos2 = { latitude: lat2, longitude: lon2 }
+    return distanceBetweenLocations(pos1, pos2)
+}
+
+
+
 const convert = function (request) {
     try {
         return new Promise((resolve, reject) => {
@@ -38,7 +74,7 @@ const convert = function (request) {
                 // let json = JSON.stringify(parts[0].data);
                 // let bufferOriginal = Buffer.from(JSON.parse(json).data);
                 // let finalJSONData = JSON.parse(bufferOriginal.toString());
-                let finalJSONData = JSON.parse(request.body.body.content);                
+                let finalJSONData = JSON.parse(request.body.body.content);
 
                 // todo // add logic to reject if the type is not linestring
 
@@ -111,4 +147,89 @@ const convert = function (request) {
     }
 }
 
+const convertpytheo = function (request) {
+    try {
+        return new Promise((resolve, reject) => {
+            try {
+                // var bodyBuffer = Buffer.from(request.body);
+                // var boundary = multipart.getBoundary(request.headers['content-type']);
+                // var parts = multipart.Parse(bodyBuffer, boundary);
+                // let orgFileName = parts[0].filename;
+                // let json = JSON.stringify(parts[0].data);
+                // let bufferOriginal = Buffer.from(JSON.parse(json).data);
+                // let finalJSONData = JSON.parse(bufferOriginal.toString());
+                let finalJSONData = JSON.parse(request.body.body.content);
+
+                // todo // add logic to reject if the type is not linestring
+
+                let arrObj = [];
+                finalJSONData.features.map((i) => {
+                    let propertiesObj = { ...i.properties }
+                    let newKey = []
+                    Object.keys(propertiesObj).map(
+                        (i) => newKey.push(`Properties.${i}`)
+                    )
+                    let newObj = {};
+                    Object.keys(propertiesObj).map(
+                        (i, index) => {
+                            newObj[newKey[index]] = propertiesObj[i]
+                        }
+                    )
+                    let coordinatesLength = i.geometry.coordinates.length;
+                    let cumulative_totalM = 0;
+                    if (coordinatesLength > 0) {
+                        i.geometry.coordinates.map((coordinate, index) => {
+                            let totalM = 0
+                            if (coordinatesLength === index + 1) {
+                                // last one // ignore
+                            } else {
+                                // others
+                                let dist = pytheoCalc(
+                                    parseFloat(i.geometry.coordinates[index][1]),
+                                    parseFloat(i.geometry.coordinates[index][0]),
+                                    parseFloat(i.geometry.coordinates[index + 1][1]),
+                                    parseFloat(i.geometry.coordinates[index + 1][0])
+                                );
+                                totalM = totalM + dist;
+                                cumulative_totalM = cumulative_totalM + dist;
+                                arrObj.push({
+                                    ...newObj,
+                                    "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index][1] : "No Data",
+                                    "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index][0] : "No Data",
+                                    "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index + 1][1] : "No Data",
+                                    "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index + 1][0] : "No Data",
+                                    "Distance in Kilo Meters": totalM / 1000,
+                                    "Cumulative Distance in Kilo Meters": cumulative_totalM / 1000,
+                                    "Distance in Miles": getMiles(totalM),
+                                    "Cumulative Distance in Miles": getMiles(cumulative_totalM),
+                                })
+                            }
+                        })
+                    } else {
+                        arrObj.push({
+                            ...newObj,
+                            "Geometry.Start.Latitude": "No Data",
+                            "Geometry.Start.Longitude": "No Data",
+                            "Geometry.End.Latitude": "No Data",
+                            "Geometry.End.Longitude": "No Data"
+                        })
+                    }
+                })
+                if (arrObj.length > 0) {
+                    let fields = Object.keys(arrObj[0]);
+                    const csv = json2csv(arrObj, fields);
+                    resolve(csv)
+                } else {
+                    resolve({ "message": "No data / Something went wrong" })
+                }
+            } catch (error) {
+                resolve({ "msg": JSON.stringify(error) })
+            }
+        })
+    } catch (error) {
+        resolve({ "msg": JSON.stringify(error) })
+    }
+}
+
 exports.do = convert;
+exports.dopyteo = convertpytheo;

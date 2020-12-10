@@ -21,6 +21,9 @@ module.exports = async function (context, req) {
         case "linestringgeojsontocsvflowversion":
             response = await convertLineStringToCSV.do(req)
             break;
+        case "linestringgeojsontocsvflowversion_pyth_theo":
+            response = await convertLineStringToCSV.dopyteo(req)
+            break;
         case "download":
             response = await download.do(req, file_name)
             break;
