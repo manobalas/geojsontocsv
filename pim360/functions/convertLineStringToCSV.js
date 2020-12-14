@@ -172,11 +172,11 @@ const convert = function (request) {
                     resolve({ "message": "No data / Something went wrong" })
                 }
             } catch (error) {
-                resolve({ "msg": JSON.stringify(error) })
+                resolve({ "msg1": JSON.stringify(error) })
             }
         })
     } catch (error) {
-        resolve({ "msg": JSON.stringify(error) })
+        resolve({ "msg2": JSON.stringify(error) })
     }
 }
 
