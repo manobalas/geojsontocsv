@@ -95,37 +95,37 @@ const convert = function (request) {
                     let cumulative_totalM = 0;
                     if (coordinatesLength > 0) {
                         if (i.geometry.type.toLowerCase() == 'polygon') {
-                            i.geometry.coordinates.map((polyline, index0) => {
-                                polyline.map((coordinates, index1) => {
-                                    coordinates.map((coordinate, index) => {
-                                        let totalM = 0
-                                        if (coordinatesLength === index + 1) {
-                                            // last one // ignore
-                                        } else {
-                                            // others
-                                            let dist = distanceCalc(
-                                                parseFloat(i.geometry.coordinates[index0][index1][index][1]),
-                                                parseFloat(i.geometry.coordinates[index0][index1][index][0]),
-                                                parseFloat(i.geometry.coordinates[index0][index1][index + 1][1]),
-                                                parseFloat(i.geometry.coordinates[index0][index1][index + 1][0])
-                                            );
-                                            totalM = totalM + dist;
-                                            cumulative_totalM = cumulative_totalM + dist;
-                                            arrObj.push({
-                                                ...newObj,
-                                                "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index][1] : "No Data",
-                                                "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index][0] : "No Data",
-                                                "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index + 1][1] : "No Data",
-                                                "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index + 1][0] : "No Data",
-                                                "Distance in Kilo Meters": totalM / 1000,
-                                                "Cumulative Distance in Kilo Meters": cumulative_totalM / 1000,
-                                                "Distance in Miles": getMiles(totalM),
-                                                "Cumulative Distance in Miles": getMiles(cumulative_totalM),
-                                            })
-                                        }
-                                    })
-                                })
-                            })
+                            // i.geometry.coordinates.map((polyline, index0) => {
+                            //     polyline.map((coordinates, index1) => {
+                            //         coordinates.map((coordinate, index) => {
+                            //             let totalM = 0
+                            //             if (coordinatesLength === index + 1) {
+                            //                 // last one // ignore
+                            //             } else {
+                            //                 // others
+                            //                 let dist = distanceCalc(
+                            //                     parseFloat(i.geometry.coordinates[index][1]),
+                            //                     parseFloat(i.geometry.coordinates[index][0]),
+                            //                     parseFloat(i.geometry.coordinates[index + 1][1]),
+                            //                     parseFloat(i.geometry.coordinates[index + 1][0])
+                            //                 );
+                            //                 totalM = totalM + dist;
+                            //                 cumulative_totalM = cumulative_totalM + dist;
+                            //                 arrObj.push({
+                            //                     ...newObj,
+                            //                     "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index][1] : "No Data",
+                            //                     "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index][0] : "No Data",
+                            //                     "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index + 1][1] : "No Data",
+                            //                     "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index + 1][0] : "No Data",
+                            //                     "Distance in Kilo Meters": totalM / 1000,
+                            //                     "Cumulative Distance in Kilo Meters": cumulative_totalM / 1000,
+                            //                     "Distance in Miles": getMiles(totalM),
+                            //                     "Cumulative Distance in Miles": getMiles(cumulative_totalM),
+                            //                 })
+                            //             }
+                            //         })
+                            //     })
+                            // })
                         } else {
                             i.geometry.coordinates.map((coordinate, index) => {
                                 let totalM = 0
@@ -134,19 +134,19 @@ const convert = function (request) {
                                 } else {
                                     // others
                                     let dist = distanceCalc(
-                                        parseFloat(i.geometry.coordinates[index0][index1][index][1]),
-                                        parseFloat(i.geometry.coordinates[index0][index1][index][0]),
-                                        parseFloat(i.geometry.coordinates[index0][index1][index + 1][1]),
-                                        parseFloat(i.geometry.coordinates[index0][index1][index + 1][0])
+                                        parseFloat(i.geometry.coordinates[index][1]),
+                                        parseFloat(i.geometry.coordinates[index][0]),
+                                        parseFloat(i.geometry.coordinates[index + 1][1]),
+                                        parseFloat(i.geometry.coordinates[index + 1][0])
                                     );
                                     totalM = totalM + dist;
                                     cumulative_totalM = cumulative_totalM + dist;
                                     arrObj.push({
                                         ...newObj,
-                                        "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index][1] : "No Data",
-                                        "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index][0] : "No Data",
-                                        "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index + 1][1] : "No Data",
-                                        "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index + 1][0] : "No Data",
+                                        "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index][1] : "No Data",
+                                        "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index][0] : "No Data",
+                                        "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index + 1][1] : "No Data",
+                                        "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index + 1][0] : "No Data",
                                         "Distance in Kilo Meters": totalM / 1000,
                                         "Cumulative Distance in Kilo Meters": cumulative_totalM / 1000,
                                         "Distance in Miles": getMiles(totalM),
@@ -220,19 +220,19 @@ const convertpytheo = function (request) {
                             } else {
                                 // others
                                 let dist = pytheoCalc(
-                                    parseFloat(i.geometry.coordinates[index0][index1][index][1]),
-                                    parseFloat(i.geometry.coordinates[index0][index1][index][0]),
-                                    parseFloat(i.geometry.coordinates[index0][index1][index + 1][1]),
-                                    parseFloat(i.geometry.coordinates[index0][index1][index + 1][0])
+                                    parseFloat(i.geometry.coordinates[index][1]),
+                                    parseFloat(i.geometry.coordinates[index][0]),
+                                    parseFloat(i.geometry.coordinates[index + 1][1]),
+                                    parseFloat(i.geometry.coordinates[index + 1][0])
                                 );
                                 totalM = totalM + dist;
                                 cumulative_totalM = cumulative_totalM + dist;
                                 arrObj.push({
                                     ...newObj,
-                                    "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index][1] : "No Data",
-                                    "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index][0] : "No Data",
-                                    "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index + 1][1] : "No Data",
-                                    "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index0][index1][index + 1][0] : "No Data",
+                                    "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index][1] : "No Data",
+                                    "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index][0] : "No Data",
+                                    "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index + 1][1] : "No Data",
+                                    "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index + 1][0] : "No Data",
                                     "Distance in Kilo Meters": totalM / 1000,
                                     "Cumulative Distance in Kilo Meters": cumulative_totalM / 1000,
                                     "Distance in Miles": getMiles(totalM),
