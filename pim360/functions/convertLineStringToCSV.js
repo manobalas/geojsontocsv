@@ -101,26 +101,33 @@ const convert = function (request) {
                                     if (coordinatesLength === index + 1) {
                                         // last one // ignore
                                     } else {
-                                        // others
-                                        let dist = distanceCalc(
-                                            parseFloat(i.geometry.coordinates[index0][index][1]),
-                                            parseFloat(i.geometry.coordinates[index0][index][0]),
-                                            parseFloat(i.geometry.coordinates[index0][index + 1][1]),
-                                            parseFloat(i.geometry.coordinates[index0][index + 1][0])
-                                        );
-                                        totalM = totalM + dist;
-                                        cumulative_totalM = cumulative_totalM + dist;
                                         arrObj.push({
                                             ...newObj,
-                                            "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index0][index][1] : "No Data",
-                                            "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index0][index][0] : "No Data",
-                                            "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index0][index + 1][1] : "No Data",
-                                            "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index0][index + 1][0] : "No Data",
-                                            "Distance in Kilo Meters": totalM / 1000,
-                                            "Cumulative Distance in Kilo Meters": cumulative_totalM / 1000,
-                                            "Distance in Miles": getMiles(totalM),
-                                            "Cumulative Distance in Miles": getMiles(cumulative_totalM),
+                                            "Geometry.Start.Latitude": "No Data",
+                                            "Geometry.Start.Longitude": "No Data",
+                                            "Geometry.End.Latitude": "No Data",
+                                            "Geometry.End.Longitude": "No Data"
                                         })
+                                        // others
+                                        // let dist = distanceCalc(
+                                        //     parseFloat(i.geometry.coordinates[index0][index][1]),
+                                        //     parseFloat(i.geometry.coordinates[index0][index][0]),
+                                        //     parseFloat(i.geometry.coordinates[index0][index + 1][1]),
+                                        //     parseFloat(i.geometry.coordinates[index0][index + 1][0])
+                                        // );
+                                        // totalM = totalM + dist;
+                                        // cumulative_totalM = cumulative_totalM + dist;
+                                        // arrObj.push({
+                                        //     ...newObj,
+                                        //     "Geometry.Start.Latitude": i.geometry != null ? i.geometry.coordinates[index0][index][1] : "No Data",
+                                        //     "Geometry.Start.Longitude": i.geometry != null ? i.geometry.coordinates[index0][index][0] : "No Data",
+                                        //     "Geometry.End.Latitude": i.geometry != null ? i.geometry.coordinates[index0][index + 1][1] : "No Data",
+                                        //     "Geometry.End.Longitude": i.geometry != null ? i.geometry.coordinates[index0][index + 1][0] : "No Data",
+                                        //     "Distance in Kilo Meters": totalM / 1000,
+                                        //     "Cumulative Distance in Kilo Meters": cumulative_totalM / 1000,
+                                        //     "Distance in Miles": getMiles(totalM),
+                                        //     "Cumulative Distance in Miles": getMiles(cumulative_totalM),
+                                        // })
                                     }
                                 })
                             })
