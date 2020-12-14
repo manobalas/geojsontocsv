@@ -94,8 +94,9 @@ const convert = function (request) {
                     let coordinatesLength = i.geometry.coordinates.length;
                     let cumulative_totalM = 0;
                     if (coordinatesLength > 0) {
-                        if (i.geometry.type.toString().toLowerCase() == "polygon") {
+                        if (i.geometry.type.toString().toLowerCase() == "polygon") {                            
                             i.geometry.coordinates.map((i, index0) => {
+                                coordinatesLength = i.length;
                                 i.map((ii, index) => {
                                     let totalM = 0
                                     if (coordinatesLength === index + 1) {
