@@ -103,7 +103,7 @@ const convert = function (request) {
                                     } else {
                                         arrObj.push({
                                             ...newObj,
-                                            "Geometry.Start.Latitude": "No Data",
+                                            "Geometry.Start.Latitude": JSON.stringify(ii),
                                             "Geometry.Start.Longitude": "No Data",
                                             "Geometry.End.Latitude": "No Data",
                                             "Geometry.End.Longitude": "No Data"
