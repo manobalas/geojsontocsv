@@ -103,19 +103,19 @@ const convert = function (request) {
                                     } else {
                                         // others
                                         let dist = distanceCalc(
-                                            parseFloat(i[index0][index][1]),
-                                            parseFloat(i[index0][index][0]),
-                                            parseFloat(i[index0][index + 1][1]),
-                                            parseFloat(i[index0][index + 1][0])
+                                            parseFloat(i[index][1]),
+                                            parseFloat(i[index][0]),
+                                            parseFloat(i[index + 1][1]),
+                                            parseFloat(i[index + 1][0])
                                         );
                                         totalM = totalM + dist;
                                         cumulative_totalM = cumulative_totalM + dist;
                                         arrObj.push({
                                             ...newObj,
-                                            "Geometry.Start.Latitude": i[index0][index][1] ? i[index0][index][1] : "No Data",
-                                            "Geometry.Start.Longitude": i[index0][index][0] ? i[index0][index][0] : "No Data",
-                                            "Geometry.End.Latitude": i[index0][index + 1][1] ? i[index0][index + 1][1] : "No Data",
-                                            "Geometry.End.Longitude": i[index0][index + 1][0] ? i[index0][index + 1][0] : "No Data",
+                                            "Geometry.Start.Latitude": i[index][1] ? i[index][1] : "No Data",
+                                            "Geometry.Start.Longitude": i[index][0] ? i[index][0] : "No Data",
+                                            "Geometry.End.Latitude": i[index + 1][1] ? i[index + 1][1] : "No Data",
+                                            "Geometry.End.Longitude": i[index + 1][0] ? i[index + 1][0] : "No Data",
                                             "Distance in Kilo Meters": totalM / 1000,
                                             "Cumulative Distance in Kilo Meters": cumulative_totalM / 1000,
                                             "Distance in Miles": getMiles(totalM),
