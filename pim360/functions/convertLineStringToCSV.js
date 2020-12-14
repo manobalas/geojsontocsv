@@ -95,6 +95,13 @@ const convert = function (request) {
                     let cumulative_totalM = 0;
                     if (coordinatesLength > 0) {
                         if (i.geometry.type.toString().toLowerCase() == "polygon") {
+                            arrObj.push({
+                                ...newObj,
+                                "Geometry.Start.Latitude": "No Data",
+                                "Geometry.Start.Longitude": "No Data",
+                                "Geometry.End.Latitude": "No Data",
+                                "Geometry.End.Longitude": "No Data"
+                            })
                             // i.geometry.coordinates.map((polyline, index0) => {
                             //     polyline.map((coordinates, index1) => {
                             //         coordinates.map((coordinate, index) => {
